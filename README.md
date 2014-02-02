@@ -1,4 +1,4 @@
 UKHASnetIgate
 =============
 
-Takes serial UKHAS packets and sends them to the internet
+Takes serial UKHASnet packets and sends them to the internet
