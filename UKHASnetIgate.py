@@ -2,20 +2,21 @@ import urllib
 import urllib2
 import serial
 import time
-ser = serial.Serial('/dev/ttyUSB0', 9600) # Serial connection settings go here
+ser = serial.Serial('/dev/ttyUSB0', 9600) # serial connection settings go here
 
 while True:
-  rawpkt = ser.readline().rstrip() # incoming data, one line at the time, stripped from all kind of whitespaces
-  print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpkt)
+  rawpkt = ser.readline().rstrip() # incoming data, one line at the time
+  print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpkt) # %c should produce "Sun Feb  9 21:51:48 2014"-like dates
 
-  strppkt = rawpkt.strip('rx: ') # remove the 'rx: ' at the beginning
-  print ('\tSending to API: ' + strppkt)
+  if rawpkt.startswith('rx: ') # received RF packets get send down the serial connection with the "rx: " prefix
+    strppkt = rawpkt.strip('rx: ') # remove the 'rx: ' at the beginning
+    print ('\tSending to API: ' + strppkt)
 
-  url = 'http://ukhas.net/api/upload'
-  values = {'origin' : 'RS00', 'data' : strppkt} # origin, who submitted it to the API?
+    url = 'http://ukhas.net/api/upload'
+    values = {'origin' : 'RS00', 'data' : strppkt} # origin, who submitted it to the API?
 
-  data = urllib.urlencode(values)
-  req = urllib2.Request(url, data)
-  response = urllib2.urlopen(req)
-  the_page = response.read()
-  print ('\tAPI response: \t' + the_page + '\n')
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    the_page = response.read()
+    print ('\tAPI response: \t' + the_page + '\n') # error chekking goes here
