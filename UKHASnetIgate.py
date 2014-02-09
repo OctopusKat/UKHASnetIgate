@@ -7,8 +7,11 @@ while True:
   rawpkt = ser.readline().rstrip() # incoming data, one line at the time, stripped from all kind of whitespaces
   print ('Incoming raw: ' + rawpkt)
 
+  strppkt = rawpkt.strip('rx: ') # remove the 'rx: ' at the beginning
+  print ('Sending to API: ' + strppkt)
+
   url = 'http://ukhas.net/api/upload'
-  values = {'origin' : 'REVSPACE00', 'data' : rawpkt} # origin, who submitted it to the API?
+  values = {'origin' : 'RS00', 'data' : strppkt} # origin, who submitted it to the API?
 
   data = urllib.urlencode(values)
   req = urllib2.Request(url, data)
