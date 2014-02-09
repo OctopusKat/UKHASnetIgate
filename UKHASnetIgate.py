@@ -2,8 +2,14 @@ import urllib
 import urllib2
 import serial
 import time
+import atexit
+
 serialbuf = serial.Serial('/dev/ttyUSB0', 9600) # Configured for my setup
 igatename = 'RS00' # should be the same as it's RF-id
+
+def exit_handler():
+  print 'Clean exit. Bye bye!'
+
 
 while True:
   rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
@@ -21,3 +27,6 @@ while True:
     response = urllib2.urlopen(req)
     apifeedback = response.read().rstrip() # Once again we clean it up before parsing
     print ('\tAPI response: \t' + apifeedback + '\n') # error checking goes here
+
+
+atexit.register(exit_handler)
