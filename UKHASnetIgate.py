@@ -17,4 +17,4 @@ while True:
   req = urllib2.Request(url, data)
   response = urllib2.urlopen(req)
   the_page = response.read()
-  print ('API response: ' + the_page)
+  print ('API response: ' + the_page + '\n')
