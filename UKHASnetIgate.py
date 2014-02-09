@@ -2,21 +2,22 @@ import urllib
 import urllib2
 import serial
 import time
-ser = serial.Serial('/dev/ttyUSB0', 9600) # serial connection settings go here
+serialbuf = serial.Serial('/dev/ttyUSB0', 9600) # Configured for my setup
+igatename = 'RS00' # should be the same as it's RF-id
 
 while True:
-  rawpkt = ser.readline().rstrip() # incoming data, one line at the time
-  print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpkt) # %c should produce "Sun Feb  9 21:51:48 2014"-like dates
+  rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
+  print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpacket) # Timestamp in "Sun Feb  9 21:51:48 2014" formar
 
-  if rawpkt.startswith('rx: '): # received RF packets get send down the serial connection with the rx prefix
-    strppkt = rawpkt.strip('rx: ') # remove the rx-prefix
-    print ('\tSending to API: ' + strppkt)
+  if rawpacket.startswith('rx: '): # We are only intrested in received RF packets
+    strippacket = rawpacket.strip('rx: ') # Remove the prefix
+    print ('\tSending to API: ' + strippacket)
 
     url = 'http://ukhas.net/api/upload'
-    values = {'origin' : 'RS00', 'data' : strppkt} # origin, who submitted it to the API?
+    values = {'origin' : igatename, 'data' : strippacket} # API requires origin and data
 
     data = urllib.urlencode(values)
     req = urllib2.Request(url, data)
     response = urllib2.urlopen(req)
-    the_page = response.read()
-    print ('\tAPI response: \t' + the_page + '\n') # error chekking goes here
+    apifeedback = response.read().rstrip() # Once again we clean it up before parsing
+    print ('\tAPI response: \t' + apifeedback + '\n') # error checking goes here
