@@ -8,8 +8,8 @@ while True:
   rawpkt = ser.readline().rstrip() # incoming data, one line at the time
   print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpkt) # %c should produce "Sun Feb  9 21:51:48 2014"-like dates
 
-  if rawpkt.startswith('rx: ') # received RF packets get send down the serial connection with the "rx: " prefix
-    strppkt = rawpkt.strip('rx: ') # remove the 'rx: ' at the beginning
+  if rawpkt.startswith('rx: ') # received RF packets get send down the serial connection with the rx prefix
+    strppkt = rawpkt.strip('rx: ') # remove the rx-prefix
     print ('\tSending to API: ' + strppkt)
 
     url = 'http://ukhas.net/api/upload'
