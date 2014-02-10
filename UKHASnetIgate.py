@@ -14,9 +14,9 @@ atexit.register(exit_handler)
 
 
 while True:
+  rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
   print (time.strftime("%c")) # Timestamp in "Sun Feb  9 21:51:48 2014" format
 
-  rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
   if rawpacket.startswith('rx: '): # We are only intrested in received RF packets
     print ('\tIncoming raw: \t' + rawpacket)
 
