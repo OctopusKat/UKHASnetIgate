@@ -10,12 +10,16 @@ igatename = 'RS00' # should be the same as it's RF-id
 def exit_handler():
   print 'Clean exit. Bye bye!'
 
+atexit.register(exit_handler)
+
 
 while True:
-  rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
-  print (time.strftime("%c") + '\n\tIncoming raw: \t' + rawpacket) # Timestamp in "Sun Feb  9 21:51:48 2014" formar
+  print (time.strftime("%c")) # Timestamp in "Sun Feb  9 21:51:48 2014" format
 
+  rawpacket = serialbuf.readline().rstrip() # We should look at the incoming data one line at the time
   if rawpacket.startswith('rx: '): # We are only intrested in received RF packets
+    print ('\tIncoming raw: \t' + rawpacket)
+
     strippacket = rawpacket.strip('rx: ') # Remove the prefix
     print ('\tSending to API: ' + strippacket)
 
@@ -28,5 +32,5 @@ while True:
     apifeedback = response.read().rstrip() # Once again we clean it up before parsing
     print ('\tAPI response: \t' + apifeedback + '\n') # error checking goes here
 
-
-atexit.register(exit_handler)
+  else:
+  print ('\tIncoming raw: \t\033[1m' + rawpacket + '\033[0m\n')
