@@ -33,4 +33,4 @@ while True:
     print ('\tAPI response: \t' + apifeedback + '\n') # error checking goes here
 
   else:
-  print ('\tIncoming raw: \t\033[1m' + rawpacket + '\033[0m\n')
+    print ('\tIncoming raw: \t\033[1m' + rawpacket + '\033[0m\n')
